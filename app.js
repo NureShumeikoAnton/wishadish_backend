@@ -5,16 +5,16 @@ const cors = require('cors');
 
 const PORT = process.env.PORT || 5000;
 
+const userRoutes = require('./routes/userRoutes.js');
+
 app.use(cors());
 app.use(express.json());
 
-db.sequelize.sync({force: true}).then(() => {
-        console.log('Drop and Resync with {force: true}');
-    }
-);
+app.use('/users', userRoutes);
 
 db.sequelize.sync()
     .then(() => {
+        console.log('Database connected');
         app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
             console.log(`http://localhost:${PORT}`);
