@@ -38,4 +38,8 @@ const User = db.sequelize.define('User', {
     timestamps: false
 });
 
+User.associate = (models) => {
+    User.hasOne(models.ResetToken, { foreignKey: 'userId' });
+};
+
 module.exports = User;
