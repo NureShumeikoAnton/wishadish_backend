@@ -63,10 +63,15 @@ const confirmReset = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     try {
-        const { userId, password } = req.body;
+        const { userId, token, password } = req.body;
         const user = await User.findOne({where: {userId}});
         if (!user) {
             return res.status(400).json({message: 'User does not exist'});
+        }
+
+        const resetToken = await ResetToken.findOne({where: {userId, token}});
+        if (!resetToken) {
+            return res.status(400).json({message: 'Token does not exist'});
         }
 
         const salt = await bcrypt.genSalt(10);
