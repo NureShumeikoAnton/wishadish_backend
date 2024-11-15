@@ -1,5 +1,5 @@
 const admin = require('../firebase');
-const { User } = require('../models');
+const User = require('../models/User');
 
 const register = async (req, res) => {
     try {
@@ -7,19 +7,15 @@ const register = async (req, res) => {
 
         const decodedToken = await admin.auth().verifyIdToken(token);
         const { uid, email } = decodedToken;
+        console.log(decodedToken);
 
-        let user = await User.findOne({ where: { firebaseUid: uid } });
-        if (user) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-
-        user = await User.create({
-            firebaseUid: uid,
+        let user = await User.create({
             lastName,
             firstName,
             email,
             role,
-            phone
+            phone,
+            uid
         });
 
         res.status(201).json({ message: 'User registered successfully', user });
@@ -35,7 +31,7 @@ const login = async (req, res) => {
         const decodedToken = await admin.auth().verifyIdToken(token);
         const { uid } = decodedToken;
 
-        const user = await User.findOne({ where: { firebaseUid: uid } });
+        const user = await User.findOne({ where: { userId: uid } });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

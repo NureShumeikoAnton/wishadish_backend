@@ -25,6 +25,11 @@ const User = db.sequelize.define('User', {
     phone: {
         type: DataTypes.STRING(255)
     },
+    uid: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        unique: true
+    },
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
