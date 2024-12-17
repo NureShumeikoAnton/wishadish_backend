@@ -1,4 +1,4 @@
-const User = require('../models/User.js');
+const User = require('../models/Relations').User;
 const bcrypt = require('bcryptjs');
 
 const getAllUsers = async (req, res) => {
@@ -46,8 +46,23 @@ const getUserByEmail = async (req, res) => {
     }
 }
 
+const getUserByUID = async (req, res) => {
+    try {
+        const {uid} = req.params;
+        const user = await User.findOne({where: {uid}});
+        if (!user) {
+            return res.status(404).json({message: 'User not found'});
+        }
+        res.status(200).json(user);
+    }
+    catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 module.exports = {
     getAllUsers,
     createUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserByUID
 }

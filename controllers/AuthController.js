@@ -1,5 +1,5 @@
 const admin = require('../firebase');
-const User = require('../models/User');
+const User = require('../models/Relations').User;
 
 const register = async (req, res) => {
     try {
