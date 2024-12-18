@@ -1,4 +1,5 @@
 const {User, Order, OrderDish} = require('../models/Relations');
+const admin = require('../firebase');
 
 const getAllOrders = async (req, res) => {
     try {
@@ -12,11 +13,14 @@ const getAllOrders = async (req, res) => {
 const createOrder = async (req, res) => {
     try {
         const {cart, deliveryTime} = req.body;
-        const uid = req.headers['uid'];
+        const token = req.headers['token'];
 
-        if(!uid) {
+        if(!token) {
             return res.status(400).json({message: 'User not authenticated'});
         }
+
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        const { uid } = decodedToken
 
         if(!cart || cart.length === 0) {
             return res.status(400).json({message: 'Cart is empty'});
