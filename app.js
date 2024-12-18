@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const db = require('./config/db.config.js');
 const cors = require('cors');
+const path = require('path');
 
 const PORT = process.env.PORT || 5000;
 
@@ -17,6 +18,8 @@ app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/dishes', dishRoutes);
 app.use('/orders', orderRoutes);
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 db.sequelize.sync()
     .then(() => {

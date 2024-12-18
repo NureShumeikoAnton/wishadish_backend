@@ -69,10 +69,29 @@ const deleteDish = async (req, res) => {
     }
 }
 
+const uploadImage = async (req, res) => {
+    try {
+        const {dishId} = req.params;
+        const imageUrl = `/uploads/dishes/${req.file.filename}`;
+
+        const dish = await Dish.findByPk(dishId);
+        if (!dish) {
+            return res.status(404).json({message: 'Dish not found'});
+        }
+        dish.imageUrl = imageUrl;
+        await dish.save();
+        return res.status(200).json({message: 'Image uploaded successfully'});
+    }
+    catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+}
+
 module.exports = {
     getAllDishes,
     createDish,
     getDishById,
     updateDish,
-    deleteDish
+    deleteDish,
+    uploadImage
 }
