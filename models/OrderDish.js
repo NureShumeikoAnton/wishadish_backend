@@ -8,7 +8,8 @@ const OrderDish = db.sequelize.define('OrderDish', {
             model: 'order',
             key: 'orderId'
         },
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     dishId: {
         type: DataTypes.INTEGER,
@@ -16,7 +17,8 @@ const OrderDish = db.sequelize.define('OrderDish', {
             model: 'dish',
             key: 'dishId'
         },
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     quantity: {
         type: DataTypes.INTEGER,

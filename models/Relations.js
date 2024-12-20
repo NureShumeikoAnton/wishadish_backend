@@ -12,15 +12,11 @@ User.hasMany(Order, {
     foreignKey: 'userId'
 });
 
-Order.belongsToMany(Dish, {
-    through: OrderDish,
-    foreignKey: 'orderId'
-});
+Order.hasMany(OrderDish, { foreignKey: 'orderId' });
+OrderDish.belongsTo(Order, { foreignKey: 'orderId' });
 
-Dish.belongsToMany(Order, {
-    through: OrderDish,
-    foreignKey: 'dishId'
-});
+Dish.hasMany(OrderDish, { foreignKey: 'dishId' });
+OrderDish.belongsTo(Dish, { foreignKey: 'dishId' });
 
 module.exports = {
     sequelize,
