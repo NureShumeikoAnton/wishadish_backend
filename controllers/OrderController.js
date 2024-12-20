@@ -30,7 +30,8 @@ const createOrder = async (req, res) => {
 
         const newOrder = await Order.create({
             userId: user.userId,
-            createdAt: deliveryTime,
+            deliveryTime: deliveryTime,
+            createdAt: new Date(),
             status: 'Pending'
         });
 

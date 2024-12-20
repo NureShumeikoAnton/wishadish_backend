@@ -15,6 +15,9 @@ const Order = db.sequelize.define('Order', {
         type: DataTypes.STRING(255),
         allowNull: false
     },
+    deliveryTime: {
+        type: DataTypes.DATE
+    },
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
