@@ -1,4 +1,5 @@
 const Dish = require('../models/Relations.js').Dish;
+const admin = require('../firebase');
 
 const getAllDishes = async (req, res) => {
     try {
