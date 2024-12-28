@@ -18,6 +18,20 @@ OrderDish.belongsTo(Order, { foreignKey: 'orderId' });
 Dish.hasMany(OrderDish, { foreignKey: 'dishId' });
 OrderDish.belongsTo(Dish, { foreignKey: 'dishId' });
 
+User.belongsToMany(Dish, {
+    through: 'favorites',
+    foreignKey: 'userId',
+    otherKey: 'dishId',
+    timestamps: false
+});
+
+Dish.belongsToMany(User, {
+    through: 'favorites',
+    foreignKey: 'dishId',
+    otherKey: 'userId',
+    timestamps: false
+});
+
 module.exports = {
     sequelize,
     User,

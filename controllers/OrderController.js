@@ -95,8 +95,61 @@ const getOrderById = async (req, res) => {
     }
 }
 
+const getOrderCart = async (req, res) => {
+    try {
+        const token = req.headers['token'];
+        
+        if(!token) {
+            return res.status(400).json({message: 'User not authenticated'});
+        }
+        
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        const { uid } = decodedToken
+        const user = await User.findOne({where: {uid: uid}});
+        const userId = user.userId;
+
+        const orders = await Order.findAll({
+            where: { userId },
+            include: [{
+                model: OrderDish,
+                attributes: ['dishId', 'quantity'],
+                required: true
+            }]
+        });
+
+        if (!orders || orders.length === 0) {
+            return { message: 'No orders found for this user.' };
+        }
+
+        const ordersWithCart = orders.map(order => {
+            const cart = {};
+            order.OrderDishes.forEach(orderDish => {
+                const { dishId, quantity } = orderDish;
+                if (cart[dishId]) {
+                    cart[dishId] += quantity;
+                } else {
+                    cart[dishId] = quantity;
+                }
+            });
+
+            return {
+                orderId: order.orderId,
+                userId: order.userId,
+                status: order.status,
+                deliveryTime: order.deliveryTime,
+                cart: cart
+            };
+        });
+
+        res.status(200).json(ordersWithCart);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 module.exports = {
     getAllOrders,
     createOrder,
-    getOrderById
+    getOrderById,
+    getOrderCart
 }

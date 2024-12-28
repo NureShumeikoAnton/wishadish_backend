@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
 const dishRoutes = require('./routes/dishRoutes.js');
 const orderRoutes = require('./routes/orderRoutes.js');
+const favouritesRoutes = require('./routes/favouritesRoutes.js');
 
 app.use(cors());
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/dishes', dishRoutes);
 app.use('/orders', orderRoutes);
+app.use('/favourites', favouritesRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

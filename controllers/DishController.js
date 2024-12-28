@@ -9,6 +9,40 @@ const getAllDishes = async (req, res) => {
     }
 }
 
+const getDishUser = async (req, res) => {
+    try {
+        const token = req.headers['token'];
+
+        if(!token) {
+            return res.status(400).json({message: 'User not authenticated'});
+        }
+
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        const { uid } = decodedToken
+        const user = await User.findOne({where: {uid: uid}});
+        const userId = user.userId
+        const dishes = await Dish.findAll();
+
+        const dishesWithFavouriteStatus = await Promise.all(dishes.map(async (dish) => {
+            const [favourite] = await db.sequelize.query(
+                `SELECT 1 FROM favourites WHERE userId = :userId AND dishId = :dishId LIMIT 1`,
+                {
+                    replacements: { userId, dishId: dish.dishId },
+                    type: Sequelize.QueryTypes.SELECT
+                }
+            );
+            return {
+                ...dish.toJSON(),
+                isFavourite: favourite ? true : false
+            };
+        }));
+
+        res.status(200).json(dishesWithFavouriteStatus);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 const createDish = async (req, res) => {
     try {
         const {name, description, price, imageUrl, category} = req.body;
@@ -93,5 +127,6 @@ module.exports = {
     getDishById,
     updateDish,
     deleteDish,
-    uploadImage
+    uploadImage,
+    getDishUser
 }
