@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.get('/', getFavoruites);
 router.post('/', postFavoruites);
-router.delete('/:dishId', deleteFavoruites);
+router.delete('/', deleteFavoruites);
 
 module.exports = router;

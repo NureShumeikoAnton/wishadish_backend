@@ -57,7 +57,7 @@ const getFavoruites = async (req, res) => {
 
 const deleteFavoruites = async (req, res) => {
     try {
-        const {dishId} = req.params;
+        const {dishId} = req.query;
         const token = req.headers['token'];
 
         if(!token) {
@@ -68,7 +68,7 @@ const deleteFavoruites = async (req, res) => {
         const { uid } = decodedToken
         const user = await User.findOne({where: {uid: uid}});
         const userId = user.userId
-        await sequelize.query(
+        await db.sequelize.query(
             `DELETE FROM favourites WHERE dishId = ${dishId} AND userId = ${userId}`
         );
 
