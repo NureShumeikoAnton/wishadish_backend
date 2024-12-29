@@ -16,7 +16,7 @@ const postFavoruites = async (req, res) => {
         const user = await User.findOne({where: {uid: uid}});
         const userId = user.userId
         await sequelize.query(
-            `INSERT INTO favourites (dishId, userId) VALUES (${dishId}, ${userId}`,
+            `INSERT INTO favourites (dishId, userId) VALUES (${dishId}, ${userId})`,
             {
               replacements: { dishId, userId },
               type: db.sequelize.QueryTypes.INSERT,
@@ -57,7 +57,7 @@ const getFavoruites = async (req, res) => {
 
 const deleteFavoruites = async (req, res) => {
     try {
-        const {dishId} = req.body;
+        const {dishId} = req.params;
         const token = req.headers['token'];
 
         if(!token) {
