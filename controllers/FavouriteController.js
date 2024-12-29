@@ -1,5 +1,6 @@
 const {User} = require('../models/Relations.js');
 const admin = require('../firebase');
+const db = require('../config/db.config.js');
 
 const postFavoruites = async (req, res) => {
     try {
@@ -18,7 +19,7 @@ const postFavoruites = async (req, res) => {
             `INSERT INTO favourites (dishId, userId) VALUES (${dishId}, ${userId}`,
             {
               replacements: { dishId, userId },
-              type: sequelize.QueryTypes.INSERT,
+              type: db.sequelize.QueryTypes.INSERT,
             }
         );
 
@@ -44,7 +45,7 @@ const getFavoruites = async (req, res) => {
             `SELECT * FROM favourites WHERE userId = ${userId}`,
             {
               replacements: { userId },
-              type: sequelize.QueryTypes.SELECT,
+              type: db.sequelize.QueryTypes.SELECT,
             }
         );
 

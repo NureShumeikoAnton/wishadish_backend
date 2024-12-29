@@ -1,4 +1,6 @@
 const Dish = require('../models/Relations.js').Dish;
+const User = require('../models/Relations.js').User;
+const db = require('../config/db.config.js');
 const admin = require('../firebase');
 
 const getAllDishes = async (req, res) => {
@@ -29,7 +31,7 @@ const getDishUser = async (req, res) => {
                 `SELECT 1 FROM favourites WHERE userId = :userId AND dishId = :dishId LIMIT 1`,
                 {
                     replacements: { userId, dishId: dish.dishId },
-                    type: Sequelize.QueryTypes.SELECT
+                    type: db.sequelize.QueryTypes.SELECT
                 }
             );
             return {
@@ -124,10 +126,10 @@ const uploadImage = async (req, res) => {
 
 module.exports = {
     getAllDishes,
+    getDishUser,
     createDish,
     getDishById,
     updateDish,
     deleteDish,
-    uploadImage,
-    getDishUser
+    uploadImage
 }
