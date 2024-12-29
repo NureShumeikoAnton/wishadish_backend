@@ -4,7 +4,7 @@ const {getOrderCart, getAllOrders, getOrderById, createOrder} = require('../cont
 
 router.get('/', getAllOrders);
 router.post('/', createOrder);
-router.get('/:orderId', getOrderById);
 router.get('/user', getOrderCart);
+router.get('/:orderId', getOrderById);
 
 module.exports = router;
